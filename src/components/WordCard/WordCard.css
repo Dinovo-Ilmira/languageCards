@@ -1,0 +1,28 @@
+.word-card {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px; 
+    text-align: center;
+    max-width: 240px; 
+    margin: 20px auto; 
+  }
+  
+  .word-card h2 {
+    margin: 0;
+    font-size: 24px; 
+  }
+  
+  .word-card p {
+    font-size: 18px; 
+  }
+  
+  .word-card button {
+    display: block;
+    margin: 10px auto; 
+    padding: 5px 10px;
+    cursor: pointer;
+    
+  }
+  

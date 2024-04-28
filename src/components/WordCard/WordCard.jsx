@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './WordCard.css';
 import '../../styles.css';
 
-function WordCard({ word }) {
-  
+
+const WordCard = ({ word }) => {
+  const [showTranslation, setShowTranslation] = useState(false);
+
   return (
     <div className="word-card">
-      <h3>{word.term}</h3>
-      <p>{word.transcription}</p>
-      <p>{word.translation}</p>
-      
+      <div className="english">{word.english}</div>
+      <div className="transcription">{word.transcription}</div>
+      {showTranslation && <div className="russian">{word.russian}</div>}
+      <button onClick={() => setShowTranslation(!showTranslation)}>
+        {showTranslation ? 'Скрыть' : 'Показать перевод'}
+      </button>
     </div>
   );
-}
+};
 
 export default WordCard;

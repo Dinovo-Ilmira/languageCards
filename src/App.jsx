@@ -4,6 +4,7 @@ import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import './styles.css';
 import CardList from './components/CardList/CardList'; 
+import WordCard from './components/WordCard/WordCard';
 
 function App() {
   const [words, setWords] = useState([
@@ -11,14 +12,19 @@ function App() {
     { id: 2, english: 'first', transcription: '[fərst]', russian: 'первый' },
     
   ]);
+  const [selectedWord, setSelectedWord] = useState(null);
 
-  const handleAddWord = () => {
-    const newWord = { id: words.length + 1, english: '', transcription: '', russian: '' };
-    setWords([...words, newWord]);
+  const handleSelectWord = (word) => {
+    setSelectedWord(word);
   };
 
-  const handleUpdateWord = (id) => {
-    console.log(`Update word with id ${id}`);
+  const handleAddWord = (newWord) => {
+    setWords([...words, { ...newWord, id: Date.now() }]);
+  };
+
+  const handleUpdateWord = (updatedWord) => {
+    setWords(words.map(word => word.id === updatedWord.id ? updatedWord : word));
+    setSelectedWord(null); 
   };
 
   const handleDeleteWord = (id) => {
@@ -27,13 +33,16 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Learn Foreign Words</h1>
+      <Header />
+      {selectedWord && <WordCard word={selectedWord} />}
       <CardList
         words={words}
+        onSelectWord={handleSelectWord}
         onAddWord={handleAddWord}
         onUpdateWord={handleUpdateWord}
         onDeleteWord={handleDeleteWord}
       />
+      <Footer />
     </div>
   );
 }

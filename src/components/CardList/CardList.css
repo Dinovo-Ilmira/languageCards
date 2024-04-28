@@ -1,22 +1,99 @@
+.word-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
+.word-table th,
+.word-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
 
-.card-list-table {
-    width: 100%;
-    border-collapse: collapse;
+.word-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
 
-  }
-  
-  .card-list-table th,
-  .card-list-table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-   
-  }
-  
+.word-table tr:hover {
+  background-color: #f4f4f4;
+}
 
-  .edit-button,
-  .delete-button {
-    cursor: pointer;
+.word-table button {
+  cursor: pointer;
   
-  }
-  
+}
+.word-table button {
+  cursor: pointer;
+  background-color: #4CAF50; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  margin-right: 5px; 
+  text-transform: uppercase; 
+  font-weight: bold; 
+  transition: background-color 0.3s; 
+}
+
+.word-table button:hover {
+  background-color: #45a049; 
+}
+
+.word-table button.delete-button {
+  background-color: #f44336;
+}
+
+.word-table button.delete-button:hover {
+  background-color: #d32f2f; 
+}
+
+.word-table button.edit-button {
+  background-color: #ffc107;
+}
+
+.word-table button.edit-button:hover {
+  background-color: #ff9800; 
+}
+
+.word-table button.cancel-button {
+  background-color: #bbbbbb; 
+}
+
+.word-table button.cancel-button:hover {
+  background-color: #a9a9a9; 
+}
+.add-word-form {
+  margin-top: 20px; 
+  text-align: center;
+}
+
+.add-word-form input {
+  margin: 0 5px; 
+  padding: 10px; 
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+}
+
+.add-word-form button {
+  padding: 10px 20px; 
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  border-radius: 4px;
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+
+.add-word-form button:hover {
+  background-color: #45a049; 
+}
+
+.new-word-row {
+  background-color: #f9f9f9; 
+}

@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CardList from '../CardList/CardList';
 import './Main.css';
 import '../../styles.css';
 
-const words = [
-  { id: 1, term: "Hello", transcription: "həˈləʊ", translation: "Привет", nickname: "Приветствие" },
- 
-];
+const Main = ({ initialValue }) => {
+  const [editMode, setEditMode] = useState(false);
+  const [value, setValue] = useState(initialValue);
 
-const Main = () => {
+  const handleValueChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const cancelEdit = () => {
+    setValue(initialValue);
+    setEditMode(false); 
+  };
+
   return (
-    <main className="main">
-      <CardList words={words} /> 
-    </main>
+    <div>
+      {editMode ? (
+        <input type="text" value={value} onChange={handleValueChange} />
+      ) : (
+        <span>{value}</span>
+      )}
+      <button onClick={() => setEditMode(true)}>Редактировать</button>
+      {editMode && <button onClick={cancelEdit}>Отмена редактирования</button>}
+    </div>
   );
-}
+};
 
 export default Main;
