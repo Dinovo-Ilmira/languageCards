@@ -1,0 +1,58 @@
+.word-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .control-button {
+    background: none;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .control-button:hover {
+    background-color: #ddd;
+  }
+  
+  .word-card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 300px;
+  }
+  
+  .control-button.left {
+    margin-right: auto; 
+  }
+  
+  .control-button.right {
+    margin-left: auto; 
+  }
+  
+.slide-left-enter {
+    transform: translateX(100%);
+  }
+  
+  .slide-left-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms;
+  }
+  
+  .slide-right-enter {
+    transform: translateX(-100%);
+  }
+  
+  .slide-right-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms;
+  }
+  
