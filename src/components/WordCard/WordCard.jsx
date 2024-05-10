@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import './WordCard.css';
 
 const WordCard = ({ words }) => {
   const { id } = useParams();
-  
+
   if (!Array.isArray(words) || words.length === 0) {
     return <p>Слова отсутствуют</p>;
   }
@@ -16,7 +16,7 @@ const WordCard = ({ words }) => {
 
   const changeWord = (newIndex, direction) => {
     setAnimationClass(direction === 'next' ? 'slide-left' : 'slide-right');
-    setShowTranslation(false); 
+    setShowTranslation(false);
     setCurrentIndex(newIndex);
   };
 
@@ -32,8 +32,8 @@ const WordCard = ({ words }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setAnimationClass(''); 
-    }, 500); 
+      setAnimationClass('');
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [currentIndex]);
@@ -41,17 +41,20 @@ const WordCard = ({ words }) => {
   const word = words[currentIndex];
 
   return (
-    <div className="word-carousel">
-      <button className="control-button" onClick={prevWord}>&lt;</button>
-      <div className={`word-card ${animationClass}`}>
-        <div className="english">{word.english}</div>
-        <div className="transcription">{word.transcription}</div>
-        {showTranslation && <div className="russian">{word.russian}</div>}
-        {!showTranslation && (
-          <button onClick={() => setShowTranslation(true)}>Показать перевод</button>
-        )}
+    <div className="word-card-container">
+      <Link to="/cards" className="back-link">Back to All Words</Link>
+      <div className="word-carousel">
+        <button className="control-button" onClick={prevWord}>&lt;</button>
+        <div className={`word-card ${animationClass}`}>
+          <div className="english">{word.english}</div>
+          <div className="transcription">{word.transcription}</div>
+          {showTranslation && <div className="russian">{word.russian}</div>}
+          {!showTranslation && (
+            <button onClick={() => setShowTranslation(true)}>Показать перевод</button>
+          )}
+        </div>
+        <button className="control-button" onClick={nextWord}>&gt;</button>
       </div>
-      <button className="control-button" onClick={nextWord}>&gt;</button>
     </div>
   );
 };

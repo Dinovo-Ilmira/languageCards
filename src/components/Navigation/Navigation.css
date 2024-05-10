@@ -1,0 +1,33 @@
+.navigation {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navigation .logo img {
+    width: 100px;
+  }
+  
+  .navigation ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .navigation li {
+    padding: 0 10px;
+  }
+  
+  .navigation a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navigation a:hover {
+    text-decoration: underline;
+  }
+  

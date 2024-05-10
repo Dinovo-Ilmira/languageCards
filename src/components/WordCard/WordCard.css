@@ -1,8 +1,14 @@
+.word-card-container {
+  position: relative;
+  width: 100%; 
+}
+
 .word-carousel {
   display: flex;
   align-items: center;
   justify-content: space-between; 
   padding: 20px;
+  width: 100%; 
 }
 
 .control-button {
@@ -58,4 +64,11 @@
 
 .slide-right-enter-active, .slide-right-exit {
   transform: translateX(0);
+}
+
+.back-link {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
 }
