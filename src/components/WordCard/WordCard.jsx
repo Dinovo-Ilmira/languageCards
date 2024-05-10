@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './WordCard.css';
 
 const WordCard = ({ words }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
   
   if (!Array.isArray(words) || words.length === 0) {
     return <p>Слова отсутствуют</p>;
@@ -13,11 +12,12 @@ const WordCard = ({ words }) => {
   const initialIndex = words.findIndex(word => word.id === parseInt(id));
   const [currentIndex, setCurrentIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
   const [animationClass, setAnimationClass] = useState('');
+  const [showTranslation, setShowTranslation] = useState(false);
 
   const changeWord = (newIndex, direction) => {
     setAnimationClass(direction === 'next' ? 'slide-left' : 'slide-right');
+    setShowTranslation(false); 
     setCurrentIndex(newIndex);
-    navigate(`/word/${words[newIndex].id}`);
   };
 
   const nextWord = () => {
@@ -39,7 +39,6 @@ const WordCard = ({ words }) => {
   }, [currentIndex]);
 
   const word = words[currentIndex];
-  const [showTranslation, setShowTranslation] = useState(false);
 
   return (
     <div className="word-carousel">
@@ -48,9 +47,9 @@ const WordCard = ({ words }) => {
         <div className="english">{word.english}</div>
         <div className="transcription">{word.transcription}</div>
         {showTranslation && <div className="russian">{word.russian}</div>}
-        <button onClick={() => setShowTranslation(!showTranslation)}>
-          {showTranslation ? 'Скрыть перевод' : 'Показать перевод'}
-        </button>
+        {!showTranslation && (
+          <button onClick={() => setShowTranslation(true)}>Показать перевод</button>
+        )}
       </div>
       <button className="control-button" onClick={nextWord}>&gt;</button>
     </div>
