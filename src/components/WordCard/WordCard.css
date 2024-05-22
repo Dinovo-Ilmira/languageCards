@@ -1,14 +1,15 @@
 .word-card-container {
   position: relative;
-  width: 100%; 
+  width: 100%;
+  padding-top: 20px; 
 }
 
 .word-carousel {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   padding: 20px;
-  width: 100%; 
+  width: 100%;
 }
 
 .control-button {
@@ -20,28 +21,28 @@
 }
 
 .word-card {
-  flex-grow: 1; 
-  margin: 0 20px; 
+  flex-grow: 1;
+  margin: 0 20px;
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  max-width: 300px; 
+  max-width: 300px;
 }
 
 .word-card h2 {
   margin: 0;
-  font-size: 24px; 
+  font-size: 24px;
 }
 
 .word-card p {
-  font-size: 18px; 
+  font-size: 18px;
 }
 
 .word-card button {
   display: block;
-  margin: 10px auto; 
+  margin: 10px auto;
   padding: 5px 10px;
   cursor: pointer;
 }
@@ -50,19 +51,23 @@
   transition: transform 0.5s ease-in-out;
 }
 
-.slide-left-enter, .slide-left-exit-active {
+.slide-left-enter,
+.slide-left-exit-active {
   transform: translateX(100%);
 }
 
-.slide-left-enter-active, .slide-left-exit {
+.slide-left-enter-active,
+.slide-left-exit {
   transform: translateX(0);
 }
 
-.slide-right-enter, .slide-right-exit-active {
+.slide-right-enter,
+.slide-right-exit-active {
   transform: translateX(-100%);
 }
 
-.slide-right-enter-active, .slide-right-exit {
+.slide-right-enter-active,
+.slide-right-exit {
   transform: translateX(0);
 }
 

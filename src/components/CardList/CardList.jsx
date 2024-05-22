@@ -1,38 +1,50 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import './CardList.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./CardList.css";
 
-const CardList = ({ words, onAddWord, onUpdateWord, onDeleteWord }) => {
+const CardList = ({ words, onAddWord }) => {
   const navigate = useNavigate();
-  const [editWordId, setEditWordId] = useState(null);
-  const [currentWord, setCurrentWord] = useState({ english: '', transcription: '', russian: '' });
-  const [newWord, setNewWord] = useState({ english: '', transcription: '', russian: '' });
+  const [editWordIndex, setEditWordIndex] = useState(null);
+  const [currentWord, setCurrentWord] = useState({
+    english: "",
+    transcription: "",
+    russian: "",
+  });
+  const [newWord, setNewWord] = useState(words);
 
-  const handleEdit = (word) => {
-    setEditWordId(word.id);
+  const handleEdit = (index, word) => {
+    setEditWordIndex(index);
     setCurrentWord({ ...word });
   };
 
   const handleSave = () => {
-    onUpdateWord({ ...currentWord, id: editWordId });
-    setEditWordId(null);
+    // Создание копии массива слов для обновления
+    setNewWord((prevNewWord) => {
+      const updatedWords = [...prevNewWord];
+      // Замена отредактированного слова в копии массива
+      updatedWords[editWordIndex] = currentWord;
+      return updatedWords; // Возврат обновлённого массива слов
+    });
+    setEditWordIndex(null); // Завершение редактирования слова
   };
-
+  
   const handleDelete = (id) => {
-    onDeleteWord(id);
+    // Фильтруем массив слов, оставляя только те, у которых id не совпадает с id удаляемого слова
+    setNewWord((prevNewWord) => prevNewWord.filter((word) => word.id !== id));
   };
+  
 
   const handleCancel = () => {
-    setEditWordId(null);
+    setEditWordIndex(null);
   };
 
   const handleAdd = () => {
     onAddWord(newWord);
-    setNewWord({ english: '', transcription: '', russian: '' }); 
+    setNewWord({ english: "", transcription: "", russian: "" });
   };
 
   const handleSelectWord = (word) => {
-    navigate(`/word/${word.id}`); 
+    navigate(`/word/${word.id}`);
   };
 
   return (
@@ -48,14 +60,47 @@ const CardList = ({ words, onAddWord, onUpdateWord, onDeleteWord }) => {
           </tr>
         </thead>
         <tbody>
-          {words.map((word, index) => (
+          {newWord.map((word, index) => (
             <tr key={word.id}>
               <td>{index + 1}</td>
-              {editWordId === word.id ? (
+              {editWordIndex === index ? (
                 <>
-                  <td><input type="text" value={currentWord.english} onChange={(e) => setCurrentWord({ ...currentWord, english: e.target.value })} /></td>
-                  <td><input type="text" value={currentWord.transcription} onChange={(e) => setCurrentWord({ ...currentWord, transcription: e.target.value })} /></td>
-                  <td><input type="text" value={currentWord.russian} onChange={(e) => setCurrentWord({ ...currentWord, russian: e.target.value })} /></td>
+                  <td>
+                    <input
+                      type="text"
+                      value={currentWord.english}
+                      onChange={(e) =>
+                        setCurrentWord({
+                          ...currentWord,
+                          english: e.target.value,
+                        })
+                      }
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={currentWord.transcription}
+                      onChange={(e) =>
+                        setCurrentWord({
+                          ...currentWord,
+                          transcription: e.target.value,
+                        })
+                      }
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      value={currentWord.russian}
+                      onChange={(e) =>
+                        setCurrentWord({
+                          ...currentWord,
+                          russian: e.target.value,
+                        })
+                      }
+                    />
+                  </td>
                 </>
               ) : (
                 <>
@@ -65,15 +110,17 @@ const CardList = ({ words, onAddWord, onUpdateWord, onDeleteWord }) => {
                 </>
               )}
               <td>
-                {editWordId === word.id ? (
+                {editWordIndex === index ? (
                   <>
                     <button onClick={handleSave}>Save</button>
                     <button onClick={handleCancel}>Cancel</button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => handleEdit(word)}>Edit</button>
-                    <button onClick={() => handleDelete(word.id)}>Delete</button>
+                    <button onClick={() => handleEdit(index, word)}>Edit</button>
+                    <button onClick={() => handleDelete(word.id)}>
+                      Delete
+                    </button>
                   </>
                 )}
               </td>
@@ -82,9 +129,26 @@ const CardList = ({ words, onAddWord, onUpdateWord, onDeleteWord }) => {
         </tbody>
       </table>
       <div>
-        <input type="text" placeholder="English" value={newWord.english} onChange={(e) => setNewWord({ ...newWord, english: e.target.value })} />
-        <input type="text" placeholder="Transcription" value={newWord.transcription} onChange={(e) => setNewWord({ ...newWord, transcription: e.target.value })} />
-        <input type="text" placeholder="Russian" value={newWord.russian} onChange={(e) => setNewWord({ ...newWord, russian: e.target.value })} />
+        <input
+          type="text"
+          placeholder="English"
+          value={newWord.english}
+          onChange={(e) => setNewWord({ ...newWord, english: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Transcription"
+          value={newWord.transcription}
+          onChange={(e) =>
+            setNewWord({ ...newWord, transcription: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Russian"
+          value={newWord.russian}
+          onChange={(e) => setNewWord({ ...newWord, russian: e.target.value })}
+        />
         <button onClick={handleAdd}>Add Word</button>
       </div>
     </div>

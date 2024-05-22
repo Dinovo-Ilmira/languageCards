@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './WordCard.css';
 
-const WordCard = ({ words }) => {
+const WordCard = ({ words, onLearned, wordsLearned }) => {
   const { id } = useParams();
+  const showTranslationButtonRef = useRef(null);
 
   if (!Array.isArray(words) || words.length === 0) {
     return <p>Слова отсутствуют</p>;
@@ -35,14 +36,24 @@ const WordCard = ({ words }) => {
       setAnimationClass('');
     }, 500);
 
+    if (showTranslationButtonRef.current) {
+      showTranslationButtonRef.current.focus();
+    }
+
     return () => clearTimeout(timer);
   }, [currentIndex]);
+
+  const handleShowTranslation = () => {
+    setShowTranslation(true);
+    onLearned(); 
+  };
 
   const word = words[currentIndex];
 
   return (
     <div className="word-card-container">
       <Link to="/cards" className="back-link">Back to All Words</Link>
+      <h1>Words Learned: {wordsLearned}</h1>
       <div className="word-carousel">
         <button className="control-button" onClick={prevWord}>&lt;</button>
         <div className={`word-card ${animationClass}`}>
@@ -50,7 +61,12 @@ const WordCard = ({ words }) => {
           <div className="transcription">{word.transcription}</div>
           {showTranslation && <div className="russian">{word.russian}</div>}
           {!showTranslation && (
-            <button onClick={() => setShowTranslation(true)}>Показать перевод</button>
+            <button
+              ref={showTranslationButtonRef}
+              onClick={handleShowTranslation}
+            >
+              Показать перевод
+            </button>
           )}
         </div>
         <button className="control-button" onClick={nextWord}>&gt;</button>
