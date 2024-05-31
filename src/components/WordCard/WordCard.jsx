@@ -45,7 +45,7 @@ const WordCard = ({ words, onLearned, wordsLearned }) => {
 
   const handleShowTranslation = () => {
     setShowTranslation(true);
-    onLearned(); 
+    onLearned();
   };
 
   const word = words[currentIndex];

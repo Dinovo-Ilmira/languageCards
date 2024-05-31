@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./CardList.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './CardList.css';
 
 const CardList = ({ words, onAddWord }) => {
   const navigate = useNavigate();
@@ -10,35 +10,46 @@ const CardList = ({ words, onAddWord }) => {
     transcription: "",
     russian: "",
   });
-  const [newWord, setNewWord] = useState(words);
+  const [newWord, setNewWord] = useState({ english: "", transcription: "", russian: "" });
+  const [errors, setErrors] = useState({});
 
   const handleEdit = (index, word) => {
     setEditWordIndex(index);
     setCurrentWord({ ...word });
+    setErrors({});
   };
 
   const handleSave = () => {
-    // Создание копии массива слов для обновления
-    setNewWord((prevNewWord) => {
-      const updatedWords = [...prevNewWord];
-      // Замена отредактированного слова в копии массива
-      updatedWords[editWordIndex] = currentWord;
-      return updatedWords; // Возврат обновлённого массива слов
-    });
-    setEditWordIndex(null); // Завершение редактирования слова
+    const newErrors = {};
+    if (!currentWord.english) newErrors.english = true;
+    if (!currentWord.transcription) newErrors.transcription = true;
+    if (!currentWord.russian) newErrors.russian = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    words[editWordIndex] = currentWord;
+    setEditWordIndex(null);
+    setErrors({});
   };
-  
+
   const handleDelete = (id) => {
-    // Фильтруем массив слов, оставляя только те, у которых id не совпадает с id удаляемого слова
-    setNewWord((prevNewWord) => prevNewWord.filter((word) => word.id !== id));
+    onAddWord(words.filter((word) => word.id !== id));
   };
-  
 
   const handleCancel = () => {
     setEditWordIndex(null);
+    setErrors({});
   };
 
   const handleAdd = () => {
+    if (!newWord.english || !newWord.transcription || !newWord.russian) {
+      alert("All fields are required");
+      return;
+    }
+
     onAddWord(newWord);
     setNewWord({ english: "", transcription: "", russian: "" });
   };
@@ -60,7 +71,7 @@ const CardList = ({ words, onAddWord }) => {
           </tr>
         </thead>
         <tbody>
-          {newWord.map((word, index) => (
+          {words.map((word, index) => (
             <tr key={word.id}>
               <td>{index + 1}</td>
               {editWordIndex === index ? (
@@ -75,6 +86,7 @@ const CardList = ({ words, onAddWord }) => {
                           english: e.target.value,
                         })
                       }
+                      style={errors.english ? { border: '1px solid red' } : {}}
                     />
                   </td>
                   <td>
@@ -87,6 +99,7 @@ const CardList = ({ words, onAddWord }) => {
                           transcription: e.target.value,
                         })
                       }
+                      style={errors.transcription ? { border: '1px solid red' } : {}}
                     />
                   </td>
                   <td>
@@ -99,6 +112,7 @@ const CardList = ({ words, onAddWord }) => {
                           russian: e.target.value,
                         })
                       }
+                      style={errors.russian ? { border: '1px solid red' } : {}}
                     />
                   </td>
                 </>
@@ -112,15 +126,13 @@ const CardList = ({ words, onAddWord }) => {
               <td>
                 {editWordIndex === index ? (
                   <>
-                    <button onClick={handleSave}>Save</button>
+                    <button onClick={handleSave} disabled={Object.keys(errors).length > 0}>Save</button>
                     <button onClick={handleCancel}>Cancel</button>
                   </>
                 ) : (
                   <>
                     <button onClick={() => handleEdit(index, word)}>Edit</button>
-                    <button onClick={() => handleDelete(word.id)}>
-                      Delete
-                    </button>
+                    <button onClick={() => handleDelete(word.id)}>Delete</button>
                   </>
                 )}
               </td>
