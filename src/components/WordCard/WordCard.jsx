@@ -1,66 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import './WordCard.css';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './WordCard.module.css';
+import { WordsContext } from '../../WordsContext';
 
-const WordCard = ({ words, onLearned, wordsLearned }) => {
-  const { id } = useParams();
+const WordCard = ({ onLearned, wordsLearned }) => {
+  const { words } = useContext(WordsContext);
   const showTranslationButtonRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTranslation, setShowTranslation] = useState(false);
+
+  useEffect(() => {
+    if (showTranslationButtonRef.current) {
+      showTranslationButtonRef.current.focus();
+    }
+  }, [currentIndex]);
 
   if (!Array.isArray(words) || words.length === 0) {
     return <p>Слова отсутствуют</p>;
   }
 
-  const initialIndex = words.findIndex(word => word.id === parseInt(id));
-  const [currentIndex, setCurrentIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
-  const [animationClass, setAnimationClass] = useState('');
-  const [showTranslation, setShowTranslation] = useState(false);
-
-  const changeWord = (newIndex, direction) => {
-    setAnimationClass(direction === 'next' ? 'slide-left' : 'slide-right');
-    setShowTranslation(false);
-    setCurrentIndex(newIndex);
-  };
+  const word = words[currentIndex];
 
   const nextWord = () => {
-    const newIndex = (currentIndex + 1) % words.length;
-    changeWord(newIndex, 'next');
+    setCurrentIndex((currentIndex + 1) % words.length);
+    setShowTranslation(false);
   };
 
   const prevWord = () => {
-    const newIndex = (currentIndex - 1 + words.length) % words.length;
-    changeWord(newIndex, 'prev');
+    setCurrentIndex((currentIndex - 1 + words.length) % words.length);
+    setShowTranslation(false);
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('');
-    }, 500);
-
-    if (showTranslationButtonRef.current) {
-      showTranslationButtonRef.current.focus();
-    }
-
-    return () => clearTimeout(timer);
-  }, [currentIndex]);
 
   const handleShowTranslation = () => {
     setShowTranslation(true);
     onLearned();
   };
 
-  const word = words[currentIndex];
-
   return (
-    <div className="word-card-container">
-      <Link to="/cards" className="back-link">Back to All Words</Link>
+    <div className={styles.wordCardContainer}>
+      <Link to="/cards" className={styles.backLink}>Back to All Words</Link>
       <h1>Words Learned: {wordsLearned}</h1>
-      <div className="word-carousel">
-        <button className="control-button" onClick={prevWord}>&lt;</button>
-        <div className={`word-card ${animationClass}`}>
-          <div className="english">{word.english}</div>
-          <div className="transcription">{word.transcription}</div>
-          {showTranslation && <div className="russian">{word.russian}</div>}
-          {!showTranslation && (
+      <div className={styles.wordCarousel}>
+        <button className={styles.controlButton} onClick={prevWord}>&lt;</button>
+        <div className={styles.wordCard}>
+          <div className={styles.english}>{word.english}</div>
+          <div className={styles.transcription}>{word.transcription}</div>
+          {showTranslation ? (
+            <div className={styles.russian}>{word.russian}</div>
+          ) : (
             <button
               ref={showTranslationButtonRef}
               onClick={handleShowTranslation}
@@ -69,7 +56,7 @@ const WordCard = ({ words, onLearned, wordsLearned }) => {
             </button>
           )}
         </div>
-        <button className="control-button" onClick={nextWord}>&gt;</button>
+        <button className={styles.controlButton} onClick={nextWord}>&gt;</button>
       </div>
     </div>
   );

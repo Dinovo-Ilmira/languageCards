@@ -1,0 +1,89 @@
+.wordCardContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 120px;
+  }
+  
+  .wordCarousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .controlButton {
+    background-color: #3cc9d6;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .controlButton:hover {
+    background-color: #2fb9ce;
+  }
+  
+  .wordCard {
+    flex-grow: 1;
+    margin: 0 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 300px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .wordCard .english {
+    font-size: 24px;
+    color: #3cc9d6;
+  }
+  
+  .wordCard .transcription {
+    font-size: 18px;
+    color: #2fb9ce;
+  }
+  
+  .wordCard .russian {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .wordCard button {
+    display: block;
+    margin: 10px auto;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #3cc9d6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .wordCard button:hover {
+    background-color: #2fb9ce;
+  }
+  
+  .backLink {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    color: #3cc9d6;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .backLink:hover {
+    background-color: #2fb9ce;
+  }
+  
