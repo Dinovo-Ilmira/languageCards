@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CardList.css';
+import { WordsContext } from '../../WordsContext';
 
-const CardList = ({ words, onAddWord }) => {
+const CardList = () => {
+  const { words, addWord, updateWord, deleteWord, loading, error } = useContext(WordsContext);
   const navigate = useNavigate();
   const [editWordIndex, setEditWordIndex] = useState(null);
   const [currentWord, setCurrentWord] = useState({
@@ -30,13 +32,13 @@ const CardList = ({ words, onAddWord }) => {
       return;
     }
 
-    words[editWordIndex] = currentWord;
+    updateWord(currentWord);
     setEditWordIndex(null);
     setErrors({});
   };
 
   const handleDelete = (id) => {
-    onAddWord(words.filter((word) => word.id !== id));
+    deleteWord(id);
   };
 
   const handleCancel = () => {
@@ -45,12 +47,17 @@ const CardList = ({ words, onAddWord }) => {
   };
 
   const handleAdd = () => {
-    if (!newWord.english || !newWord.transcription || !newWord.russian) {
-      alert("All fields are required");
+    const newErrors = {};
+    if (!newWord.english) newErrors.english = true;
+    if (!newWord.transcription) newErrors.transcription = true;
+    if (!newWord.russian) newErrors.russian = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    onAddWord(newWord);
+    addWord({ ...newWord });
     setNewWord({ english: "", transcription: "", russian: "" });
   };
 
@@ -58,8 +65,13 @@ const CardList = ({ words, onAddWord }) => {
     navigate(`/word/${word.id}`);
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div>
+      <h1 className="page-title">Word Cards Management</h1>
+      <p className="page-description">Manage your word cards here. You can add, edit, and delete words.</p>
       <table className="word-table">
         <thead>
           <tr>
@@ -126,13 +138,13 @@ const CardList = ({ words, onAddWord }) => {
               <td>
                 {editWordIndex === index ? (
                   <>
-                    <button onClick={handleSave} disabled={Object.keys(errors).length > 0}>Save</button>
-                    <button onClick={handleCancel}>Cancel</button>
+                    <button className="save-button" onClick={handleSave} disabled={Object.keys(errors).length > 0}>Save</button>
+                    <button className="cancel-button" onClick={handleCancel}>Cancel</button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => handleEdit(index, word)}>Edit</button>
-                    <button onClick={() => handleDelete(word.id)}>Delete</button>
+                    <button className="edit-button" onClick={() => handleEdit(index, word)}>Edit</button>
+                    <button className="delete-button" onClick={() => handleDelete(word.id)}>Delete</button>
                   </>
                 )}
               </td>
@@ -140,7 +152,8 @@ const CardList = ({ words, onAddWord }) => {
           ))}
         </tbody>
       </table>
-      <div>
+      <div className="add-word-form">
+        <h2>Add New Word</h2>
         <input
           type="text"
           placeholder="English"

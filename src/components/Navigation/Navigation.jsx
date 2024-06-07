@@ -15,7 +15,7 @@ const Navigation = () => {
         <li><Link to="/game">Game</Link></li>
         <li><Link to="/login">Login</Link></li>
         <li><Link to="/contact">Contact</Link></li>
-        <li><Link to="/formatter">Text Formatter</Link></li>
+        <li><Link to="/word">Carousel</Link></li>
       </ul>
     </nav>
   );
