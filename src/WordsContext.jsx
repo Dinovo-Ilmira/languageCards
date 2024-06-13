@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'; 
+import ErrorDisplay from './components/CardList/ErrorDisplay/ErrorDisplay'; 
 
 export const WordsContext = createContext();
 
@@ -9,7 +10,7 @@ export const WordsProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://itgirlschool.justmakeit.ru/api/words')
+    fetch('http://itgirlschool.justmakeit.ru/api/words') // Изменено для проверки
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -22,53 +23,76 @@ export const WordsProvider = ({ children }) => {
         setLoading(false);
       })
       .catch(error => {
+        console.error('Error fetching words:', error);
         setError(error);
         setLoading(false);
       });
   }, []);
 
   const addWord = (newWord) => {
-    fetch('https://itgirlschool.justmakeit.ru/api/words/add', {
+    const wordWithDefaults = {
+      ...newWord,
+      tags: "",
+      tags_json: "[]"
+    };
+
+    fetch('http://itgirlschool.justmakeit.ru/api/words/add', { // Изменено для проверки
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newWord),
+      body: JSON.stringify(wordWithDefaults),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to add word');
+      }
+      return response.json();
+    })
     .then(data => {
       setWords(prevWords => [...prevWords, data]);
     })
     .catch(error => {
+      console.error('Error adding word:', error);
       setError(error);
     });
   };
 
   const updateWord = (updatedWord) => {
-    fetch(`https://itgirlschool.justmakeit.ru/api/words/${updatedWord.id}/update`, {
+    fetch(`http://itgirlschool.justmakeit.ru/api/words/${updatedWord.id}/update`, { // Изменено для проверки
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(updatedWord),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to update word');
+      }
+      return response.json();
+    })
     .then(data => {
       setWords(prevWords => prevWords.map(word => word.id === updatedWord.id ? data : word));
     })
     .catch(error => {
+      console.error('Error updating word:', error);
       setError(error);
     });
   };
 
   const deleteWord = (id) => {
-    fetch(`https://itgirlschool.justmakeit.ru/api/words/${id}/delete`, {
+    fetch(`http://itgirlschool.justmakeit.ru/api/words/${id}/delete`, { // Изменено для проверки
       method: 'POST',
     })
-    .then(() => {
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to delete word');
+      }
       setWords(prevWords => prevWords.filter(word => word.id !== id));
     })
     .catch(error => {
+      console.error('Error deleting word:', error);
       setError(error);
     });
   };
@@ -78,7 +102,7 @@ export const WordsProvider = ({ children }) => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ErrorDisplay message={error.message} />;
   }
 
   return (

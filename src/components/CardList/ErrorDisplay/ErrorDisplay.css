@@ -1,0 +1,10 @@
+.error-display {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid red;
+    color: red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
