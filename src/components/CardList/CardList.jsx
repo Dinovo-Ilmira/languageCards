@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import './CardList.css';
-import { WordsContext } from '../../WordsContext';
 
-const CardList = () => {
-  const { words, addWord, updateWord, deleteWord, loading, error } = useContext(WordsContext);
+const CardList = observer(({ wordsStore }) => {
+  const { words, addWord, updateWord, deleteWord, loading, error } = wordsStore;
   const navigate = useNavigate();
   const [editWordIndex, setEditWordIndex] = useState(null);
   const [currentWord, setCurrentWord] = useState({
@@ -66,7 +66,7 @@ const CardList = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
@@ -178,6 +178,6 @@ const CardList = () => {
       </div>
     </div>
   );
-};
+});
 
 export default CardList;
