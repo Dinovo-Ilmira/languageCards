@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import styles from './WordCard.module.css';
-import { WordsContext } from '../../WordsContext';
 
-const WordCard = ({ onLearned, wordsLearned }) => {
-  const { words } = useContext(WordsContext);
+const WordCard = observer(({ wordsStore, onLearned, wordsLearned }) => {
+  const { words } = wordsStore;
   const showTranslationButtonRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
@@ -60,6 +60,6 @@ const WordCard = ({ onLearned, wordsLearned }) => {
       </div>
     </div>
   );
-};
+});
 
 export default WordCard;
